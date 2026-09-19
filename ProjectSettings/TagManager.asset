@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Pickup
   - Enemy
+  - CinemachineTarget
+  - audiofondo
   layers:
   - Default
   - TransparentFX
