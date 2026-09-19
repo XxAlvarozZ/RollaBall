@@ -541,6 +541,8 @@ MonoBehaviour:
   winTextObject: {fileID: 1995730793}
   pickupSound: {fileID: 8300000, guid: 8ce14858148c08a459f93602337335eb, type: 3}
   winSound: {fileID: 8300000, guid: 06a0420f8524f54458b313c29fbfd2b1, type: 3}
+  loseSound: {fileID: 8300000, guid: 1d2f348735857f047b7a5defd60d930a, type: 3}
+  wallBumpSound: {fileID: 8300000, guid: 7da886a070ddeee4ba6bc0fd415e462c, type: 3}
   bgMusic: {fileID: 1824319542}
 --- !u!114 &379496228
 MonoBehaviour:
@@ -710,7 +712,7 @@ GameObject:
   - component: {fileID: 456131466}
   m_Layer: 0
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1265,7 +1267,7 @@ GameObject:
   - component: {fileID: 915236675}
   m_Layer: 0
   m_Name: Wall (3)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2568,7 +2570,7 @@ GameObject:
   - component: {fileID: 1822667813}
   m_Layer: 0
   m_Name: Wall (1)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -3100,7 +3102,7 @@ GameObject:
   - component: {fileID: 1995228069}
   m_Layer: 0
   m_Name: Wall (2)
-  m_TagString: Untagged
+  m_TagString: Wall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -18,9 +18,11 @@ public class PlayerController : MonoBehaviour
     public GameObject winTextObject;
 
     [Header("Audio")]
-    public AudioClip pickupSound; // Archivo de audio para la recolección
-    public AudioClip winSound;    // Audio ganar
-    public AudioSource bgMusic;   // Música de fondo 
+    public AudioClip pickupSound;  // Archivo de audio para la recolección
+    public AudioClip winSound;     // Audio ganar
+    public AudioClip loseSound;    // Audio perder
+    public AudioClip wallBumpSound;// NUEVO: Audio al chocar con una pared
+    public AudioSource bgMusic;    // Música de fondo 
     private AudioSource audioSource; // Componente reproductor del Player
 
     void Start()
@@ -78,7 +80,7 @@ public class PlayerController : MonoBehaviour
         {
             winTextObject.SetActive(true);
 
-            // DETENER MÚSICA Y REPRODUCIR VICTORIA
+            // DETENER MÚSICA Y REPRODUCIR VICTORIA 
             if (bgMusic != null)
             {
                 bgMusic.Stop(); // Apaga la música de fondo de la cámara
@@ -95,12 +97,31 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        // 1 Colisión con el Enemigo
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Destroy(gameObject);
+            if (bgMusic != null)
+            {
+                bgMusic.Stop();
+            }
+
+            if (loseSound != null)
+            {
+                AudioSource.PlayClipAtPoint(loseSound, Camera.main.transform.position);
+            }
 
             winTextObject.gameObject.SetActive(true);
             winTextObject.GetComponent<TextMeshProUGUI>().text = "You Lose!";
+
+            Destroy(gameObject);
+        }
+        // 2 Colisión con las Paredes o Bordes
+        else if (collision.gameObject.CompareTag("Wall"))
+        {
+            if (audioSource != null && wallBumpSound != null)
+            {
+                audioSource.PlayOneShot(wallBumpSound);
+            }
         }
     }
 }
