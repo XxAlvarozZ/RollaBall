@@ -4,74 +4,100 @@ using TMPro;
 
 public class PlayerController : MonoBehaviour
 {
-    private Rigidbody rb; 
-    
+    private Rigidbody rb;
+
     private int count;
-    
+
     private float movementX;
     private float movementY;
-    
-    public float speed = 0; 
-    
+
+    public float speed = 0;
+
     public TextMeshProUGUI countText;
-    
+
     public GameObject winTextObject;
-    
+
+    [Header("Audio")]
+    public AudioClip pickupSound; // Archivo de audio para la recolección
+    public AudioClip winSound;    // Audio ganar
+    public AudioSource bgMusic;   // Música de fondo 
+    private AudioSource audioSource; // Componente reproductor del Player
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        
+
+        // Obtener el componente AudioSource del Player
+        audioSource = GetComponent<AudioSource>();
+
         count = 0;
-        
+
         SetCountText();
-        
+
         winTextObject.SetActive(false);
     }
-    
+
     void OnMove(InputValue movementValue)
     {
         Vector2 movementVector = movementValue.Get<Vector2>();
-        
-        movementX = movementVector.x; 
-        movementY = movementVector.y; 
+
+        movementX = movementVector.x;
+        movementY = movementVector.y;
     }
-    
-    void FixedUpdate() 
+
+    void FixedUpdate()
     {
-        Vector3 movement = new Vector3 (movementX, 0.0f, movementY);
-        
-        rb.AddForce(movement * speed); 
+        Vector3 movement = new Vector3(movementX, 0.0f, movementY);
+
+        rb.AddForce(movement * speed);
     }
-    
-    void OnTriggerEnter(Collider other) 
+
+    void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Pickup")) 
+        if (other.gameObject.CompareTag("Pickup"))
         {
             other.gameObject.SetActive(false);
-            
+
             count = count + 1;
 
             SetCountText();
+
+            // Reproducir el sonido cuando recoge un Pickup
+            if (audioSource != null && pickupSound != null)
+            {
+                audioSource.PlayOneShot(pickupSound);
+            }
         }
     }
-    
-    void SetCountText() 
+
+    void SetCountText()
     {
         countText.text = "Count: " + count.ToString();
-        
+
         if (count >= 12)
         {
             winTextObject.SetActive(true);
-            
+
+            // DETENER MÚSICA Y REPRODUCIR VICTORIA
+            if (bgMusic != null)
+            {
+                bgMusic.Stop(); // Apaga la música de fondo de la cámara
+            }
+
+            if (audioSource != null && winSound != null)
+            {
+                audioSource.PlayOneShot(winSound); // Suena la victoria
+            }
+
             Destroy(GameObject.FindGameObjectWithTag("Enemy"));
         }
     }
-    
+
     private void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Destroy(gameObject); 
+            Destroy(gameObject);
 
             winTextObject.gameObject.SetActive(true);
             winTextObject.GetComponent<TextMeshProUGUI>().text = "You Lose!";
